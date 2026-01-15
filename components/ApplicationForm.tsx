@@ -7,6 +7,8 @@ import { QUESTIONS, ROLES_CONFIG } from '../constants';
 interface ApplicationFormProps {
   role: Role;
   onSubmit: (data: ApplicationAnswers) => void;
+  isSubmitting?: boolean;
+  error?: string | null;
 }
 
 const itemVariants: Variants = {
@@ -101,11 +103,32 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
         ))}
 
         <motion.div variants={itemVariants} className="pt-6 sm:pt-8">
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl text-red-400 text-sm flex items-start gap-3"
+            >
+              <span className="text-lg">⚠️</span>
+              <div>
+                <p className="font-bold mb-1">Upload Failed</p>
+                <p className="opacity-80">{error}</p>
+              </div>
+            </motion.div>
+          )}
           <button
             type="submit"
-            className="w-full bg-[#7C7CFF] hover:bg-[#8e8eff] text-white font-bold py-4 px-6 rounded-2xl text-lg transition-all shadow-[0_0_25px_rgba(124,124,255,0.2)] hover:shadow-[0_0_35px_rgba(124,124,255,0.4)]"
+            disabled={isSubmitting}
+            className={`w-full bg-[#7C7CFF] hover:bg-[#8e8eff] text-white font-bold py-4 px-6 rounded-2xl text-lg transition-all shadow-[0_0_25px_rgba(124,124,255,0.2)] hover:shadow-[0_0_35px_rgba(124,124,255,0.4)] flex items-center justify-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
-            Send message
+            {isSubmitting ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Sending...
+              </>
+            ) : (
+              'Send message'
+            )}
           </button>
           <p className="text-center text-[#9CA3AF]/40 text-xs sm:text-sm mt-5 sm:mt-6 italic">
             "Your ideas are safe here."

@@ -17,6 +17,8 @@ type AppStep = 'landing' | 'roleSelection' | 'applicationForm' | 'success';
 const App: React.FC = () => {
   const [step, setStep] = useState<AppStep>('landing');
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleStart = useCallback(() => {
     setStep('roleSelection');
@@ -24,14 +26,20 @@ const App: React.FC = () => {
 
   const handleRoleSelect = useCallback((role: Role) => {
     setSelectedRole(role);
+    setSubmitError(null);
     setStep('applicationForm');
   }, []);
 
   const handleSubmit = useCallback(async (data: ApplicationAnswers) => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    console.log('Attempting to submit to Supabase...');
+
     try {
       const roleConfig = (ROLES_CONFIG as any[]).find(r => r.id === selectedRole);
 
-      const { error } = await supabase
+      const { error, data: resultData } = await supabase
         .from('applications')
         .insert([
           {
@@ -46,13 +54,18 @@ const App: React.FC = () => {
           }
         ]);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase Insert Error:', error);
+        throw error;
+      }
+
+      console.log('Submission successful:', resultData);
       setStep('success');
-    } catch (err) {
-      console.error('Error submitting application:', err);
-      // Still show success page for demo purposes if it fails, 
-      // but log the error
-      setStep('success');
+    } catch (err: any) {
+      console.error('Final Submission Error catch:', err);
+      setSubmitError(err.message || 'An unexpected error occurred. Please check the console.');
+    } finally {
+      setIsSubmitting(false);
     }
   }, [selectedRole]);
 
@@ -69,7 +82,14 @@ const App: React.FC = () => {
         return <RoleSelection onSelectRole={handleRoleSelect} />;
       case 'applicationForm':
         if (selectedRole) {
-          return <ApplicationForm role={selectedRole} onSubmit={handleSubmit} />;
+          return (
+            <ApplicationForm
+              role={selectedRole}
+              onSubmit={handleSubmit}
+              isSubmitting={isSubmitting}
+              error={submitError}
+            />
+          );
         }
         return <RoleSelection onSelectRole={handleRoleSelect} />;
       case 'success':
