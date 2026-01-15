@@ -16,9 +16,18 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
+# System files
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Project specific
+chromium/
+.env
+.env.local
+node_modules/
+dist/
+dist-ssr/
