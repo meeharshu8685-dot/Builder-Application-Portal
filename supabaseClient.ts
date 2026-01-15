@@ -4,11 +4,12 @@ const supabaseUrl = (import.meta as any).env.VITE_SUPABASE_URL;
 const supabaseAnonKey = (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
 
 console.log('--- Supabase Initialization Check ---');
-console.log('VITE_SUPABASE_URL Length:', supabaseUrl ? supabaseUrl.length : 0);
-console.log('VITE_SUPABASE_ANON_KEY Length:', supabaseAnonKey ? supabaseAnonKey.length : 0);
+const mask = (val: string) => val ? `${val.substring(0, 5)}...${val.substring(val.length - 4)}` : 'NULL';
+console.log('VITE_SUPABASE_URL:', mask(supabaseUrl));
+console.log('VITE_SUPABASE_ANON_KEY (length):', supabaseAnonKey ? supabaseAnonKey.length : 0);
 
-if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('your-project') || supabaseUrl.includes('missing-url')) {
-    console.error('❌ CRITICAL: Supabase credentials are MISSING or PLACEHOLDER! Submission will fail.');
+if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('MISSING')) {
+    console.error('❌ CRITICAL: Supabase credentials are MISSING! Check Vercel Env Vars.');
 }
 
 export const supabase = createClient(
