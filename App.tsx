@@ -111,6 +111,14 @@ const App: React.FC = () => {
     <SmoothScroll>
       <div className="min-h-screen text-[#E5E7EB] flex flex-col items-center font-body selection:bg-[#7C7CFF]/30 overflow-x-hidden pt-6">
         <Background3D />
+
+        {/* Environment Variable Check Warning */}
+        {((import.meta as any).env.VITE_SUPABASE_URL?.includes('MISSING') || !(import.meta as any).env.VITE_SUPABASE_URL) && (
+          <div className="fixed top-0 left-0 w-full bg-red-600 text-white text-[10px] font-bold py-1 px-4 z-[9999] text-center uppercase tracking-widest shadow-2xl">
+            ⚠️ Supabase Keys Missing on Vercel. Redploy with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.
+          </div>
+        )}
+
         <ProgressBar currentStep={currentStepIndex} totalSteps={stepOrder.length} />
         <main className="w-full flex-grow flex items-center justify-center px-4 sm:px-6">
           <AnimatePresence mode="wait">
