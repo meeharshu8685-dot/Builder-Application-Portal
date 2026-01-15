@@ -115,8 +115,8 @@ const App: React.FC = () => {
         {/* Environment Variable Check Warning */}
         {(!import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL.includes('MISSING')) && (
           <div className="fixed top-0 left-0 w-full bg-red-600 text-white text-[10px] font-bold py-1 px-4 z-[9999] text-center uppercase tracking-widest shadow-2xl">
-            ⚠️ Supabase Keys Missing. Detected URL: {import.meta.env.VITE_SUPABASE_URL ? import.meta.env.VITE_SUPABASE_URL.substring(0, 10) + '...' : 'UNDEFINED'}.
-            Check names: VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY in Vercel.
+            ⚠️ Keys Missing. URL: {import.meta.env.VITE_SUPABASE_URL || 'NONE'}.
+            Check Vercel: VITE_SUPABASE_URL & VITE_SUPABASE_ANON_KEY must be in "Production".
           </div>
         )}
 
