@@ -25,5 +25,7 @@ export interface RoleConfig {
 }
 
 export type ApplicationAnswers = {
+  email: string;
+  contact: string;
   [key: string]: string;
 };

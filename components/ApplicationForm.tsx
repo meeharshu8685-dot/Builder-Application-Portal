@@ -20,14 +20,14 @@ const itemVariants: Variants = {
   },
 };
 
-const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => {
+const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit, isSubmitting = false, error = null }) => {
   const questions = QUESTIONS[role];
   const roleInfo = ROLES_CONFIG.find(r => r.id === role);
 
   const initialAnswers = questions.reduce((acc, q) => {
     acc[q.id] = '';
     return acc;
-  }, {} as ApplicationAnswers);
+  }, { email: '', contact: '' } as ApplicationAnswers);
 
   const [answers, setAnswers] = useState<ApplicationAnswers>(initialAnswers);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -41,6 +41,17 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
+
+    // Email validation
+    if (!answers.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) {
+      newErrors.email = "Please enter a valid work email.";
+    }
+
+    // Contact validation
+    if (!answers.contact || answers.contact.length < 3) {
+      newErrors.contact = "How should we find you? (Handle or Phone)";
+    }
+
     questions.forEach(q => {
       if (!q.optional && !answers[q.id]?.trim()) {
         newErrors[q.id] = "Take your time, this bit is helpful.";
@@ -66,43 +77,82 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
       <div className="text-center mb-12 sm:mb-16">
         <motion.div variants={itemVariants} className="text-3xl sm:text-4xl mb-4 sm:mb-6">{roleInfo?.icon}</motion.div>
         <motion.h2 variants={itemVariants} className="text-2xl sm:text-3xl font-bold font-heading mb-3 sm:mb-4 text-white tracking-tight">
-          Start a conversation
+          Apply to the Collab Room
         </motion.h2>
         <motion.p variants={itemVariants} className="text-[#9CA3AF] text-base sm:text-lg">
-          No pressure. Just being honest.
+          Professional. Honest. Still Building.
         </motion.p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-12" noValidate>
-        {questions.map((q, index) => (
-          <motion.div key={q.id} variants={itemVariants} className="flex flex-col">
-            <label htmlFor={q.id} className="mb-3 sm:mb-4 font-medium text-base sm:text-lg text-white/90">
-              {q.text}
-            </label>
-            {q.type === 'textarea' ? (
-              <textarea
-                id={q.id}
-                value={answers[q.id]}
-                onChange={(e) => handleChange(q.id, e.target.value)}
-                placeholder={q.placeholder}
-                rows={3}
-                className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white resize-none text-base"
-              />
-            ) : q.type === 'text' ? (
-              <input
-                type="text"
-                id={q.id}
-                value={answers[q.id]}
-                onChange={(e) => handleChange(q.id, e.target.value)}
-                placeholder={q.placeholder}
-                className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white text-base"
-              />
-            ) : null}
-            {errors[q.id] && <p className="text-red-400/60 text-sm mt-2 sm:mt-3 ml-1">{errors[q.id]}</p>}
-          </motion.div>
-        ))}
+      <form onSubmit={handleSubmit} className="space-y-10 sm:space-y-14" noValidate>
+        {/* Contact Info Section */}
+        <section className="space-y-8 sm:space-y-10 p-6 sm:p-8 bg-white/[0.02] border border-white/5 rounded-[2rem]">
+          <h3 className="text-white/60 text-xs font-bold uppercase tracking-widest px-1">Professional Identity</h3>
 
-        <motion.div variants={itemVariants} className="pt-6 sm:pt-8">
+          <motion.div variants={itemVariants} className="flex flex-col">
+            <label htmlFor="email" className="mb-3 font-medium text-base text-white/90">
+              Work Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={answers.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              placeholder="you@example.com"
+              className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white text-base"
+            />
+            {errors.email && <p className="text-red-400/60 text-sm mt-3 ml-1">{errors.email}</p>}
+          </motion.div>
+
+          <motion.div variants={itemVariants} className="flex flex-col">
+            <label htmlFor="contact" className="mb-3 font-medium text-base text-white/90">
+              Contact Handle / Phone
+            </label>
+            <input
+              type="text"
+              id="contact"
+              value={answers.contact}
+              onChange={(e) => handleChange('contact', e.target.value)}
+              placeholder="@handle or +1..."
+              className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white text-base"
+            />
+            {errors.contact && <p className="text-red-400/60 text-sm mt-3 ml-1">{errors.contact}</p>}
+          </motion.div>
+        </section>
+
+        {/* Dynamic Questions Section */}
+        <section className="space-y-8 sm:space-y-12">
+          <h3 className="text-white/60 text-xs font-bold uppercase tracking-widest px-1">Concept & Spark</h3>
+          {questions.map((q) => (
+            <motion.div key={q.id} variants={itemVariants} className="flex flex-col">
+              <label htmlFor={q.id} className="mb-3 font-medium text-base text-white/90">
+                {q.text}
+              </label>
+              {q.type === 'textarea' ? (
+                <textarea
+                  id={q.id}
+                  value={answers[q.id]}
+                  onChange={(e) => handleChange(q.id, e.target.value)}
+                  placeholder={q.placeholder}
+                  rows={4}
+                  className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white resize-none text-base leading-relaxed"
+                />
+              ) : q.type === 'text' ? (
+                <input
+                  type="text"
+                  id={q.id}
+                  value={answers[q.id]}
+                  onChange={(e) => handleChange(q.id, e.target.value)}
+                  placeholder={q.placeholder}
+                  className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white text-base"
+                />
+              ) : null}
+              {errors[q.id] && <p className="text-red-400/60 text-sm mt-3 ml-1">{errors[q.id]}</p>}
+            </motion.div>
+          ))}
+        </section>
+
+        <motion.div variants={itemVariants} className="pt-6 sm:pt-8 bg-black/20 p-8 rounded-[2rem] border border-white/5">
           {error && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -111,7 +161,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
             >
               <span className="text-lg">⚠️</span>
               <div>
-                <p className="font-bold mb-1">Upload Failed</p>
+                <p className="font-bold mb-1">Submission Failed</p>
                 <p className="opacity-80">{error}</p>
               </div>
             </motion.div>
@@ -119,20 +169,24 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full bg-[#7C7CFF] hover:bg-[#8e8eff] text-white font-bold py-4 px-6 rounded-2xl text-lg transition-all shadow-[0_0_25px_rgba(124,124,255,0.2)] hover:shadow-[0_0_35px_rgba(124,124,255,0.4)] flex items-center justify-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`w-full bg-[#7C7CFF] hover:bg-[#8e8eff] text-white font-bold py-5 px-6 rounded-2xl text-lg transition-all shadow-[0_0_25px_rgba(124,124,255,0.2)] hover:shadow-[0_0_35px_rgba(124,124,255,0.4)] flex items-center justify-center gap-3 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
           >
             {isSubmitting ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                Sending...
+                Processing...
               </>
             ) : (
-              'Send message'
+              'Submit Application'
             )}
           </button>
-          <p className="text-center text-[#9CA3AF]/40 text-xs sm:text-sm mt-5 sm:mt-6 italic">
-            "Your ideas are safe here."
-          </p>
+          <div className="flex flex-col items-center gap-2 mt-6">
+            <p className="text-[#9CA3AF]/40 text-xs italic text-center">
+              "Your ideas are safe here. We build in quiet."
+            </p>
+            <div className="w-8 h-[1px] bg-white/5" />
+            <p className="text-[#9CA3AF]/20 text-[10px] uppercase tracking-[0.2em]">End of Transmission</p>
+          </div>
         </motion.div>
       </form>
     </motion.div>

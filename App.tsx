@@ -39,13 +39,18 @@ const App: React.FC = () => {
     try {
       const roleConfig = (ROLES_CONFIG as any[]).find(r => r.id === selectedRole);
 
+      // Separate email and contact from other answers
+      const { email, contact, ...restAnswers } = data;
+
       const { error, data: resultData } = await supabase
         .from('applications')
         .insert([
           {
             role_id: selectedRole,
             role_name: roleConfig?.name || selectedRole || 'Unknown',
-            answers: data,
+            email: email,
+            contact: contact,
+            answers: restAnswers,
             metadata: {
               submitted_at: new Date().toISOString(),
               userAgent: navigator.userAgent,
