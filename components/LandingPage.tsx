@@ -76,12 +76,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 px-4 sm:px-0">
           {[
-            { url: 'https://lottie.host/802fed28-a4cc-408a-b86e-b358e578adcf/PjG8p7sN3f.json', title: 'Instagram creators', desc: 'Any niche, any style' },
-            { url: 'https://lottie.host/7bd931ea-3617-48f0-b0b3-f61405e32304/O0T1T5L8qD.json', title: 'Designers & editors', desc: 'Still finding your style' },
-            { url: 'https://lottie.host/64d7c0f1-4fd3-4b6e-b69c-5a3d7b4c9e1e/writing.json', title: 'Writers', desc: 'Ready to write for the world' },
-            { url: 'https://lottie.host/1b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/growth.json', title: 'Marketing souls', desc: 'Trying to understand growth' },
-            { url: 'https://lottie.host/2b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/brain.json', title: 'Thinkers', desc: 'Ideas but no audience yet' },
-            { url: 'https://lottie.host/3b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/experiment.json', title: 'Experimenters', desc: 'Always trying new things' },
+            { url: 'https://lottie.host/802fed28-a4cc-408a-b86e-b358e578adcf/PjG8p7sN3f.json', title: 'Instagram creators', desc: 'Any niche, any style', icon: '📱' },
+            { url: 'https://lottie.host/7bd931ea-3617-48f0-b0b3-f61405e32304/O0T1T5L8qD.json', title: 'Designers & editors', desc: 'Still finding your style', icon: '🎨' },
+            { url: 'https://lottie.host/64d7c0f1-4fd3-4b6e-b69c-5a3d7b4c9e1e/writing.json', title: 'Writers', desc: 'Ready to write for the world', icon: '✍️' },
+            { url: 'https://lottie.host/1b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/growth.json', title: 'Marketing souls', desc: 'Trying to understand growth', icon: '📈' },
+            { url: 'https://lottie.host/2b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/brain.json', title: 'Thinkers', desc: 'Ideas but no audience yet', icon: '🧠' },
+            { url: 'https://lottie.host/3b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/experiment.json', title: 'Experimenters', desc: 'Always trying new things', icon: '🧪' },
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -90,7 +90,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
               className="p-8 sm:p-10 rounded-3xl sm:rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-[#7C7CFF]/30 group"
             >
               <div className="w-14 h-14 sm:w-16 sm:h-16 mb-4 sm:mb-6 opacity-80 group-hover:opacity-100 transition-opacity">
-                <LottieIcon url={item.url} className="w-full h-full" />
+                <LottieIcon url={item.url} fallbackIcon={item.icon} className="w-full h-full" />
               </div>
               <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-white group-hover:text-[#7C7CFF] transition-colors">{item.title}</h3>
               <p className="text-[#9CA3AF] text-sm sm:text-base leading-relaxed">{item.desc}</p>

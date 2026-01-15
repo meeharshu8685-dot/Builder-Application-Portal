@@ -44,12 +44,12 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit, isSub
 
     // Email validation
     if (!answers.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.email)) {
-      newErrors.email = "Please enter a valid work email.";
+      newErrors.email = "Please enter a valid email address.";
     }
 
     // Contact validation
-    if (!answers.contact || answers.contact.length < 3) {
-      newErrors.contact = "How should we find you? (Handle or Phone)";
+    if (!answers.contact || answers.contact.trim().length < 2) {
+      newErrors.contact = "Contact handle is compulsory.";
     }
 
     questions.forEach(q => {
@@ -91,7 +91,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit, isSub
 
           <motion.div variants={itemVariants} className="flex flex-col">
             <label htmlFor="email" className="mb-3 font-medium text-base text-white/90">
-              Work Email
+              Email
             </label>
             <input
               type="email"
@@ -106,7 +106,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit, isSub
 
           <motion.div variants={itemVariants} className="flex flex-col">
             <label htmlFor="contact" className="mb-3 font-medium text-base text-white/90">
-              Contact Handle / Phone
+              Contact Handle <span className="text-[#7C7CFF]">*</span>
             </label>
             <input
               type="text"
