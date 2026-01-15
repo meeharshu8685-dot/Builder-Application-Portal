@@ -25,10 +25,10 @@ const itemVariants = {
 
 const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectRole }) => {
   return (
-    <div>
-      <h2 className="text-3xl font-bold text-center mb-2 font-heading">Choose Your Role</h2>
-      <p className="text-[#9CA3AF] text-center mb-8">How do you want to contribute?</p>
-      <motion.div 
+    <div className="py-12">
+      <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 text-white tracking-tight font-heading">Open Collab Room</h2>
+      <p className="text-[#9CA3AF] text-center mb-16 text-lg max-w-xl mx-auto">Where does your spark usually show up?</p>
+      <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         variants={containerVariants}
         initial="hidden"

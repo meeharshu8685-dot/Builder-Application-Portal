@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Role, ApplicationAnswers } from '../types';
 import { QUESTIONS, ROLES_CONFIG } from '../constants';
 
@@ -7,6 +8,15 @@ interface ApplicationFormProps {
   role: Role;
   onSubmit: (data: ApplicationAnswers) => void;
 }
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: 'easeOut' }
+  },
+};
 
 const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => {
   const questions = QUESTIONS[role];
@@ -23,15 +33,15 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
   const handleChange = (id: string, value: string) => {
     setAnswers(prev => ({ ...prev, [id]: value }));
     if (errors[id]) {
-      setErrors(prev => ({...prev, [id]: ''}));
+      setErrors(prev => ({ ...prev, [id]: '' }));
     }
   };
-  
+
   const validate = () => {
     const newErrors: Record<string, string> = {};
     questions.forEach(q => {
       if (!q.optional && !answers[q.id]?.trim()) {
-        newErrors[q.id] = "This field is required.";
+        newErrors[q.id] = "Take your time, this bit is helpful.";
       }
     });
     setErrors(newErrors);
@@ -41,23 +51,31 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validate()) {
-      console.log('Submitting answers:', answers);
       onSubmit(answers);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="text-center mb-10">
-         <div className="text-5xl mb-4">{roleInfo?.icon}</div>
-        <h2 className="text-3xl font-bold font-heading">Application: {roleInfo?.name}</h2>
-        <p className="text-[#9CA3AF]">Answer a few questions to help us get to know you.</p>
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      className="max-w-xl mx-auto py-12 px-4"
+    >
+      <div className="text-center mb-16">
+        <motion.div variants={itemVariants} className="text-4xl mb-6">{roleInfo?.icon}</motion.div>
+        <motion.h2 variants={itemVariants} className="text-3xl font-bold font-heading mb-4 text-white tracking-tight">
+          Start a conversation
+        </motion.h2>
+        <motion.p variants={itemVariants} className="text-[#9CA3AF] text-lg">
+          No pressure. Just being honest.
+        </motion.p>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-8" noValidate>
+
+      <form onSubmit={handleSubmit} className="space-y-12" noValidate>
         {questions.map((q, index) => (
-          <div key={q.id} className="flex flex-col">
-            <label htmlFor={q.id} className="mb-3 font-medium text-lg text-[#E5E7EB]">
-              {index + 1}. {q.text} {!q.optional && <span className="text-red-500 ml-1">*</span>}
+          <motion.div key={q.id} variants={itemVariants} className="flex flex-col">
+            <label htmlFor={q.id} className="mb-4 font-medium text-lg text-white/90">
+              {q.text}
             </label>
             {q.type === 'textarea' ? (
               <textarea
@@ -65,49 +83,38 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ role, onSubmit }) => 
                 value={answers[q.id]}
                 onChange={(e) => handleChange(q.id, e.target.value)}
                 placeholder={q.placeholder}
-                rows={4}
-                className="bg-white/5 border border-white/10 rounded-lg p-3 focus:ring-2 focus:ring-[#7C7CFF] focus:border-[#7C7CFF] transition-colors w-full placeholder:text-[#9CA3AF]/50"
+                rows={3}
+                className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white resize-none"
               />
             ) : q.type === 'text' ? (
-               <input
+              <input
                 type="text"
                 id={q.id}
                 value={answers[q.id]}
                 onChange={(e) => handleChange(q.id, e.target.value)}
                 placeholder={q.placeholder}
-                className="bg-white/5 border border-white/10 rounded-lg p-3 focus:ring-2 focus:ring-[#7C7CFF] focus:border-[#7C7CFF] transition-colors w-full placeholder:text-[#9CA3AF]/50"
+                className="bg-white/[0.03] border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#7C7CFF]/50 focus:border-[#7C7CFF]/50 transition-all w-full placeholder:text-[#9CA3AF]/30 text-white"
               />
-            ) : q.type === 'radio' ? (
-              <div className="space-y-2 mt-2">
-                {q.options?.map(option => (
-                  <label key={option} className={`flex items-center p-3 rounded-lg border cursor-pointer transition-all ${answers[q.id] === option ? 'bg-[#7C7CFF]/20 border-[#7C7CFF]/50' : 'bg-white/5 border-white/10 hover:bg-white/10'}`}>
-                    <input
-                      type="radio"
-                      name={q.id}
-                      value={option}
-                      checked={answers[q.id] === option}
-                      onChange={(e) => handleChange(q.id, e.target.value)}
-                      className="h-4 w-4 text-[#7C7CFF] bg-transparent border-white/20 focus:ring-[#7C7CFF] focus:ring-offset-0"
-                    />
-                    <span className="ml-3 text-[#E5E7EB]">{option}</span>
-                  </label>
-                ))}
-              </div>
-            ): null}
-             {errors[q.id] && <p className="text-red-500 text-sm mt-2">{errors[q.id]}</p>}
-          </div>
+            ) : null}
+            {errors[q.id] && <p className="text-red-400/60 text-sm mt-3 ml-1">{errors[q.id]}</p>}
+          </motion.div>
         ))}
-        <div className="pt-4">
+
+        <motion.div variants={itemVariants} className="pt-8">
           <button
             type="submit"
-            className="w-full bg-[#7C7CFF] hover:bg-opacity-90 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-[1.01] shadow-[0_0_20px_var(--accent-color-glow)]"
+            className="w-full bg-[#7C7CFF] hover:bg-[#8e8eff] text-white font-bold py-4 px-6 rounded-2xl text-lg transition-all shadow-[0_0_25px_rgba(124,124,255,0.2)] hover:shadow-[0_0_35px_rgba(124,124,255,0.4)]"
           >
-            Submit Application
+            Send message
           </button>
-        </div>
+          <p className="text-center text-[#9CA3AF]/40 text-sm mt-6 italic">
+            "Your ideas are safe here."
+          </p>
+        </motion.div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
 export default ApplicationForm;
+

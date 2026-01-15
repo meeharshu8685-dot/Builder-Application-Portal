@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -11,15 +10,16 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, totalSteps }) =>
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   return (
-    <div className="w-full max-w-2xl mx-auto my-4 h-1.5 bg-white/10 rounded-full">
+    <div className="fixed top-0 left-0 w-full h-[3px] bg-white/[0.02] z-[1000]">
       <motion.div
-        className="h-1.5 bg-[#7C7CFF] rounded-full"
+        className="h-full bg-[#7C7CFF]/40 shadow-[0_0_10px_rgba(124,124,255,0.3)]"
         initial={{ width: '0%' }}
         animate={{ width: `${progress}%` }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
       />
     </div>
   );
 };
 
 export default ProgressBar;
+

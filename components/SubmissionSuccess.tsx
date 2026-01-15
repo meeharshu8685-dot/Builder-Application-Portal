@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -8,36 +7,40 @@ interface SubmissionSuccessProps {
 
 const SubmissionSuccess: React.FC<SubmissionSuccessProps> = ({ onReset }) => {
   return (
-    <div className="text-center flex flex-col items-center justify-center min-h-[70vh] backdrop-blur-sm bg-white/5 p-8 rounded-2xl border border-white/10">
-      <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.5, type: 'spring', bounce: 0.3 }}
-        className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6 border border-green-500/20"
-      >
-          <svg className="w-12 h-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <motion.path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
-            />
-          </svg>
-      </motion.div>
-      <h2 className="text-3xl sm:text-4xl font-bold mb-4 font-heading">Application Submitted!</h2>
-      <p className="text-lg text-[#9CA3AF] max-w-md mx-auto mb-8">
-        Thank you for your interest. We've received your application and will review it shortly. If there's a good fit, we'll be in touch.
-      </p>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="text-center py-20 px-4 max-w-xl mx-auto"
+    >
+      <div className="w-24 h-24 bg-[#7C7CFF]/5 rounded-full flex items-center justify-center mx-auto mb-10 border border-[#7C7CFF]/10">
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', damping: 12, delay: 0.2 }}
+          className="text-5xl"
+        >
+          ✨
+        </motion.span>
+      </div>
+      <h2 className="text-4xl font-bold mb-6 text-white tracking-tight font-heading">We've heard you.</h2>
+      <div className="space-y-6 mb-12">
+        <p className="text-[#9CA3AF] text-xl leading-relaxed">
+          No promises. No fake hype. <br />
+          We'll see where we fit, and we'll be in touch soon.
+        </p>
+        <p className="text-[#9CA3AF]/60 text-lg">
+          In the meantime, keep building.
+        </p>
+      </div>
       <button
         onClick={onReset}
-        className="bg-white/5 hover:bg-white/10 text-[#E5E7EB] font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300 border border-white/10 hover:border-white/20"
+        className="bg-white/[0.03] hover:bg-white/[0.08] text-white font-semibold py-4 px-10 rounded-full text-lg transition-all duration-300 border border-white/5"
       >
-        Start Over
+        Back to start
       </button>
-    </div>
+    </motion.div>
   );
 };
 
 export default SubmissionSuccess;
+

@@ -1,11 +1,10 @@
 
 export enum Role {
-  DEVELOPER = 'developer',
-  DESIGNER = 'designer',
+  INSTAGRAM = 'instagram',
+  DESIGN = 'design',
+  WRITING = 'writing',
   MARKETING = 'marketing',
-  CONTENT = 'content',
-  AI = 'ai',
-  GENERALIST = 'generalist',
+  CURIOUS = 'curious',
 }
 
 export interface Question {

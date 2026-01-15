@@ -54,22 +54,22 @@ const App: React.FC = () => {
   const currentStepIndex = stepOrder.indexOf(step);
 
   return (
-    <div className="min-h-screen text-[#E5E7EB] flex flex-col items-center p-4 sm:p-8 font-body">
+    <div className="min-h-screen text-[#E5E7EB] flex flex-col items-center font-body selection:bg-[#7C7CFF]/30">
       <ProgressBar currentStep={currentStepIndex} totalSteps={stepOrder.length} />
-      <div className="w-full max-w-4xl mx-auto flex-grow flex items-center justify-center">
+      <main className="w-full flex-grow flex items-center justify-center">
         <AnimatePresence mode="wait">
           <motion.div
             key={step}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: 'easeInOut' }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="w-full"
           >
             {renderStep()}
           </motion.div>
         </AnimatePresence>
-      </div>
+      </main>
     </div>
   );
 };
