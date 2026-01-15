@@ -1,5 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { motion, Variants } from 'framer-motion';
+import LottieIcon from './LottieIcon';
 
 interface LandingPageProps {
   onNext: () => void;
@@ -73,24 +74,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNext }) => {
         <motion.h2 variants={itemVariants} className="text-2xl font-bold mb-12 text-center text-white/80">
           Who This Is For
         </motion.h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            { icon: '📱', title: 'Instagram creators', desc: 'Any niche, any style' },
-            { icon: '🎨', title: 'Designers & editors', desc: 'Still finding your style' },
-            { icon: '✍️', title: 'Writers', desc: 'Ready to write for the world' },
-            { icon: '📈', title: 'Marketing souls', desc: 'Trying to understand growth' },
-            { icon: '🧠', title: 'Thinkers', desc: 'Ideas but no audience yet' },
-            { icon: '⚡', title: 'Experimenters', desc: 'Always trying new things' },
+            { url: 'https://lottie.host/802fed28-a4cc-408a-b86e-b358e578adcf/PjG8p7sN3f.json', title: 'Instagram creators', desc: 'Any niche, any style' },
+            { url: 'https://lottie.host/7bd931ea-3617-48f0-b0b3-f61405e32304/O0T1T5L8qD.json', title: 'Designers & editors', desc: 'Still finding your style' },
+            { url: 'https://lottie.host/64d7c0f1-4fd3-4b6e-b69c-5a3d7b4c9e1e/writing.json', title: 'Writers', desc: 'Ready to write for the world' },
+            { url: 'https://lottie.host/1b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/growth.json', title: 'Marketing souls', desc: 'Trying to understand growth' },
+            { url: 'https://lottie.host/2b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/brain.json', title: 'Thinkers', desc: 'Ideas but no audience yet' },
+            { url: 'https://lottie.host/3b9d7c8a-0a5b-4e8c-8f9a-6a5b2e8a1a3a/experiment.json', title: 'Experimenters', desc: 'Always trying new things' },
           ].map((item, i) => (
             <motion.div
               key={i}
               variants={itemVariants}
-              whileHover={{ y: -5 }}
-              className="p-8 rounded-3xl bg-white/[0.03] border border-white/5 backdrop-blur-sm transition-colors hover:bg-white/[0.05] hover:border-white/10"
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="p-10 rounded-[2rem] bg-white/[0.02] border border-white/5 backdrop-blur-md transition-all hover:bg-white/[0.04] hover:border-[#7C7CFF]/30 group"
             >
-              <div className="text-3xl mb-4">{item.icon}</div>
-              <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-              <p className="text-[#9CA3AF] text-sm leading-relaxed">{item.desc}</p>
+              <div className="w-16 h-16 mb-6 opacity-80 group-hover:opacity-100 transition-opacity">
+                <LottieIcon url={item.url} className="w-full h-full" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-[#7C7CFF] transition-colors">{item.title}</h3>
+              <p className="text-[#9CA3AF] text-base leading-relaxed">{item.desc}</p>
             </motion.div>
           ))}
         </div>

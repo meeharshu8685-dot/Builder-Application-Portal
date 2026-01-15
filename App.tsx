@@ -6,6 +6,7 @@ import RoleSelection from './components/RoleSelection';
 import ApplicationForm from './components/ApplicationForm';
 import SubmissionSuccess from './components/SubmissionSuccess';
 import ProgressBar from './components/ProgressBar';
+import Background3D from './components/Background3D';
 import { Role } from './types';
 
 type AppStep = 'landing' | 'roleSelection' | 'applicationForm' | 'success';
@@ -54,7 +55,8 @@ const App: React.FC = () => {
   const currentStepIndex = stepOrder.indexOf(step);
 
   return (
-    <div className="min-h-screen text-[#E5E7EB] flex flex-col items-center font-body selection:bg-[#7C7CFF]/30">
+    <div className="min-h-screen text-[#E5E7EB] flex flex-col items-center font-body selection:bg-[#7C7CFF]/30 overflow-x-hidden">
+      <Background3D />
       <ProgressBar currentStep={currentStepIndex} totalSteps={stepOrder.length} />
       <main className="w-full flex-grow flex items-center justify-center">
         <AnimatePresence mode="wait">

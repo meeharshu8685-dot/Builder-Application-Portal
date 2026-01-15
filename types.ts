@@ -20,6 +20,7 @@ export interface RoleConfig {
   id: Role;
   name: string;
   icon: string;
+  lottieUrl: string;
   description: string;
 }
 

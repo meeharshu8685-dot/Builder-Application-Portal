@@ -1,6 +1,6 @@
-
-import React from 'react';
+import * as React from 'react';
 import { motion } from 'framer-motion';
+import LottieIcon from './LottieIcon';
 import { Role } from '../types';
 import { ROLES_CONFIG } from '../constants';
 
@@ -42,11 +42,13 @@ const RoleSelection: React.FC<RoleSelectionProps> = ({ onSelectRole }) => {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="backdrop-blur-sm bg-white/5 p-6 rounded-xl border border-white/10 text-left focus:outline-none focus:ring-2 focus:ring-[#7C7CFF] focus:ring-offset-2 focus:ring-offset-[#0B0F14] hover:shadow-[0_0_20px_var(--accent-color-glow)] hover:border-white/20"
+            className="backdrop-blur-sm bg-white/5 p-8 rounded-[2rem] border border-white/10 text-left focus:outline-none focus:ring-2 focus:ring-[#7C7CFF]/50 hover:shadow-[0_0_30px_rgba(124,124,255,0.15)] hover:border-[#7C7CFF]/40 transition-all group"
           >
-            <div className="text-4xl mb-4">{role.icon}</div>
-            <h3 className="text-xl font-semibold text-white font-heading">{role.name}</h3>
-            <p className="text-[#9CA3AF] mt-1">{role.description}</p>
+            <div className="w-16 h-16 mb-6 opacity-70 group-hover:opacity-100 transition-opacity">
+              <LottieIcon url={role.lottieUrl} className="w-full h-full" />
+            </div>
+            <h3 className="text-2xl font-bold text-white font-heading group-hover:text-[#7C7CFF] transition-colors">{role.name}</h3>
+            <p className="text-[#9CA3AF] mt-2 leading-relaxed">{role.description}</p>
           </motion.button>
         ))}
       </motion.div>

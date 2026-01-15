@@ -1,5 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { motion } from 'framer-motion';
+import LottieIcon from './LottieIcon';
 
 interface SubmissionSuccessProps {
   onReset: () => void;
@@ -12,15 +13,11 @@ const SubmissionSuccess: React.FC<SubmissionSuccessProps> = ({ onReset }) => {
       animate={{ opacity: 1, scale: 1 }}
       className="text-center py-20 px-4 max-w-xl mx-auto"
     >
-      <div className="w-24 h-24 bg-[#7C7CFF]/5 rounded-full flex items-center justify-center mx-auto mb-10 border border-[#7C7CFF]/10">
-        <motion.span
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: 'spring', damping: 12, delay: 0.2 }}
-          className="text-5xl"
-        >
-          ✨
-        </motion.span>
+      <div className="w-48 h-48 mx-auto mb-12">
+        <LottieIcon
+          url="https://lottie.host/dca7b9af-559d-481e-84b2-a4e8a1a3a3a3/celebration.json"
+          className="w-full h-full"
+        />
       </div>
       <h2 className="text-4xl font-bold mb-6 text-white tracking-tight font-heading">We've heard you.</h2>
       <div className="space-y-6 mb-12">
